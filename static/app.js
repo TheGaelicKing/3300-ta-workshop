@@ -10,7 +10,10 @@ async function fetchTasks() {
         const li = document.createElement('li');
         li.innerHTML = `
             <span>${task.title}</span>
-            <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
+            <span class="priority">Priority: ${task.priority}</span>
+            <button class="delete-btn" onclick="deleteTask(${task.id})">
+                Delete
+            </button>
         `;
         taskList.appendChild(li);
     });
@@ -18,14 +21,16 @@ async function fetchTasks() {
 
 async function addTask() {
     const titleInput = document.getElementById('task-title');
+    const priorityInput = document.getElementById('task-priority');
     const title = titleInput.value.trim();
+    const priority = priorityInput.value;
 
     if (!title) return;
 
     await fetch('/api/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title })
+        body: JSON.stringify({ title, priority })
     });
 
     titleInput.value = '';
